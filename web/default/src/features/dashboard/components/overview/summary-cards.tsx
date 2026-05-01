@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/stores/auth-store'
 import { getCurrencyLabel, isCurrencyDisplayEnabled } from '@/lib/currency'
 import { formatNumber, formatQuota } from '@/lib/format'
+import { cn } from '@/lib/utils'
 import { useStatus } from '@/hooks/use-status'
 import { Button } from '@/components/ui/button'
 import { StaggerContainer, StaggerItem } from '@/components/page-transition'
@@ -52,22 +53,31 @@ export function SummaryCards() {
   }))
 
   return (
-    <div className='overflow-hidden rounded-lg border'>
-      <StaggerContainer className='divide-border/60 grid grid-cols-3 divide-x'>
+    <div>
+      <StaggerContainer className='grid grid-cols-1 gap-3 sm:grid-cols-3'>
         {items.map((it) => (
-          <StaggerItem key={it.title} className='px-3 py-3 sm:px-5 sm:py-4'>
+          <StaggerItem
+            key={it.title}
+            className={cn(
+              'rounded-2xl border p-4 sm:p-5',
+              it.isBalance
+                ? 'bg-primary border-primary shadow-[0_18px_55px_-40px_rgba(26,77,62,0.8)]'
+                : 'bg-card border-border'
+            )}
+          >
             <StatCard
               title={it.title}
               value={it.value}
               description={it.desc}
               icon={it.icon}
               loading={loading}
+              inverted={it.isBalance}
               action={
                 it.isBalance ? (
                   <Button
                     variant='outline'
                     size='sm'
-                    className='hidden h-6 gap-1 px-2 text-xs sm:inline-flex'
+                    className='text-primary-foreground hidden h-6 gap-1 border-white/20 bg-white/10 px-2 text-xs hover:bg-white/15 sm:inline-flex'
                     asChild
                   >
                     <Link to='/wallet'>

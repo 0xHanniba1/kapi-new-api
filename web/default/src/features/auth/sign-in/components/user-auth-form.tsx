@@ -274,6 +274,7 @@ export function UserAuthForm({
               <FormControl>
                 <Input
                   placeholder={t('Enter your username or email')}
+                  className='bg-background/80 h-11 rounded-xl'
                   {...field}
                 />
               </FormControl>
@@ -290,7 +291,11 @@ export function UserAuthForm({
             <FormItem className='relative'>
               <FormLabel>{t('Password')}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder={t('Enter password')} {...field} />
+                <PasswordInput
+                  placeholder={t('Enter password')}
+                  className='[&_input]:bg-background/80 [&_input]:h-11 [&_input]:rounded-xl'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
               <Link
@@ -305,7 +310,7 @@ export function UserAuthForm({
 
         {/* Submit Button */}
         <Button
-          className='mt-2 w-full justify-center gap-2'
+          className='mt-2 h-11 w-full justify-center gap-2 rounded-xl'
           disabled={isLoading || (requiresLegalConsent && !agreedToLegal)}
         >
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}

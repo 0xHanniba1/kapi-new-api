@@ -83,19 +83,21 @@ function FilterChip(props: {
       className={cn(
         'group inline-flex max-w-full items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium transition-all',
         props.active
-          ? 'border-foreground/30 bg-foreground/5 text-foreground shadow-sm'
-          : 'border-border/70 bg-background text-muted-foreground hover:border-border hover:bg-muted/50 hover:text-foreground'
+          ? 'border-primary/30 bg-primary/10 text-primary shadow-sm'
+          : 'border-border bg-background text-muted-foreground hover:border-primary/25 hover:bg-muted hover:text-foreground'
       )}
       title={props.option.label}
     >
-      {props.option.icon && <span className='shrink-0'>{props.option.icon}</span>}
+      {props.option.icon && (
+        <span className='shrink-0'>{props.option.icon}</span>
+      )}
       <span className='truncate'>{props.option.label}</span>
       {(props.option.suffix || props.option.count != null) && (
         <span
           className={cn(
             'rounded-full px-1.5 py-0.5 text-[10px]',
             props.active
-              ? 'bg-background text-foreground'
+              ? 'bg-background text-primary'
               : 'bg-muted text-muted-foreground'
           )}
         >
@@ -108,7 +110,10 @@ function FilterChip(props: {
 
 function FilterSection(props: FilterSectionProps) {
   return (
-    <Collapsible defaultOpen className='border-border/70 border-b pb-3 last:border-b-0'>
+    <Collapsible
+      defaultOpen
+      className='border-border border-b pb-3 last:border-b-0'
+    >
       <CollapsibleTrigger className='group flex w-full items-center justify-between py-2.5 text-left'>
         <span className='text-foreground text-sm font-semibold'>
           {props.title}
@@ -213,8 +218,9 @@ export function PricingSidebar(props: PricingSidebarProps) {
       .map(([value, label]) => ({
         value,
         label,
-        count: countBy(props.models, (model) =>
-          model.supported_endpoint_types?.includes(value) ?? false
+        count: countBy(
+          props.models,
+          (model) => model.supported_endpoint_types?.includes(value) ?? false
         ),
       })),
   ]
@@ -222,7 +228,7 @@ export function PricingSidebar(props: PricingSidebarProps) {
   return (
     <aside
       className={cn(
-        'rounded-xl border p-3',
+        'bg-card border-border rounded-2xl border p-3',
         props.className
       )}
     >

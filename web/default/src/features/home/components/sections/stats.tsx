@@ -1,5 +1,4 @@
 import { useRef, useEffect, useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
 
 interface CounterProps {
   end: number
@@ -77,28 +76,29 @@ interface StatItem {
 }
 
 export function Stats(_props: StatsProps) {
-  const { t } = useTranslation()
-
   const stats: StatItem[] = [
-    { end: 50, suffix: '+', label: t('upstream services integrated') },
-    { end: 100, suffix: '+', label: t('model billing support') },
-    { end: 50, suffix: '+', label: t('compatible API routes') },
-    { end: 10, suffix: '+', label: t('scheduling controls') },
+    { end: 30, suffix: '+', label: '供应商' },
+    { end: 80, suffix: '+', label: '模型' },
+    { end: 99.99, suffix: '%', label: '可用性', decimals: 2 },
+    { end: 100, suffix: 'ms', label: '路由开销' },
   ]
 
   return (
-    <div className='border-border/40 bg-muted/10 relative z-10 border-y'>
-      <div className='mx-auto max-w-6xl px-6 py-10 md:py-12'>
-        <div className='grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12'>
-          {stats.map((s) => (
+    <div className='bg-background border-border relative z-10 border-y'>
+      <div className='mx-auto max-w-6xl px-6 py-12 md:py-16'>
+        <div className='grid grid-cols-2 gap-y-10 md:grid-cols-4'>
+          {stats.map((s, index) => (
             <div
               key={s.label}
-              className='flex flex-col items-center text-center'
+              className='border-border flex flex-col px-3 text-left md:border-l md:px-8 first:md:border-l-0'
             >
-              <span className='text-2xl font-bold tracking-tight md:text-3xl'>
+              <span className='text-foreground font-serif text-4xl leading-none font-medium tracking-normal md:text-6xl'>
+                {index === 3 && (
+                  <span className='text-3xl md:text-5xl'>&lt;</span>
+                )}
                 <Counter end={s.end} suffix={s.suffix} decimals={s.decimals} />
               </span>
-              <span className='text-muted-foreground mt-1.5 text-xs'>
+              <span className='text-muted-foreground mt-3 font-mono text-xs font-semibold tracking-[0.18em] uppercase'>
                 {s.label}
               </span>
             </div>

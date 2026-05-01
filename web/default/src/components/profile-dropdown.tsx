@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { User, Wallet, LogOut, Settings } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -9,123 +8,112 @@ import { useUserDisplay } from '@/hooks/use-user-display'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from '@/components/ui/sheet'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { SignOutDialog } from '@/components/sign-out-dialog'
+
+const menuItemClassName =
+  'h-10 cursor-pointer rounded-xl px-3 text-sm font-medium'
 
 export function ProfileDropdown() {
   const { t } = useTranslation()
   const [open, setOpen] = useDialogState()
-  const [sheetOpen, setSheetOpen] = useState(false)
   const user = useAuthStore((state) => state.auth.user)
   const { displayName, initials, roleLabel } = useUserDisplay(user)
   const isSuperAdmin = user?.role === ROLE.SUPER_ADMIN
 
   return (
     <>
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetTrigger asChild>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='relative h-9 w-9 rounded-full p-0'>
             <Avatar className='h-9 w-9'>
               <AvatarImage src='/avatars/01.png' alt={`@${displayName}`} />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
           </Button>
-        </SheetTrigger>
-        <SheetContent
-          side='right'
-          className='flex w-full flex-col p-0 sm:max-w-sm'
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align='end'
+          sideOffset={10}
+          className='bg-background/85 border-border/50 w-72 rounded-2xl p-2 shadow-[0_18px_60px_-28px_rgba(15,15,14,0.45)] backdrop-blur-2xl'
         >
-          <SheetHeader className='border-b p-4'>
-            <SheetTitle className='text-left'>{t('User Menu')}</SheetTitle>
-          </SheetHeader>
-
-          <div className='flex flex-1 flex-col overflow-y-auto'>
-            {/* User info section */}
-            <div className='border-b p-2.5 pb-6.5'>
-              <div className='flex items-center gap-2.5'>
-                <Avatar className='size-9'>
-                  <AvatarImage src='/avatars/01.png' alt={`@${displayName}`} />
-                  <AvatarFallback className='text-xs'>
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-                <div className='flex flex-1 flex-col gap-0.5 overflow-hidden'>
-                  <p className='text-foreground truncate text-sm font-medium'>
-                    {displayName}
-                  </p>
-                  <div className='flex items-center gap-1.5'>
-                    <span className='text-muted-foreground text-xs'>
-                      {roleLabel}
-                    </span>
-                    {user?.group && (
-                      <>
-                        <span className='text-muted-foreground text-xs'>·</span>
-                        <span className='text-muted-foreground text-xs'>
-                          {String(user.group)}
-                        </span>
-                      </>
-                    )}
-                  </div>
+          <div className='border-border/50 bg-muted/25 rounded-xl border p-3'>
+            <div className='flex items-center gap-3'>
+              <Avatar className='size-10'>
+                <AvatarImage src='/avatars/01.png' alt={`@${displayName}`} />
+                <AvatarFallback className='bg-primary/10 text-primary text-sm font-semibold'>
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+              <div className='flex min-w-0 flex-1 flex-col gap-0.5'>
+                <p className='text-foreground truncate text-sm font-semibold'>
+                  {displayName}
+                </p>
+                <div className='flex items-center gap-1.5 overflow-hidden'>
+                  <span className='text-muted-foreground truncate text-xs'>
+                    {roleLabel}
+                  </span>
+                  {user?.group && (
+                    <>
+                      <span className='text-muted-foreground/60 text-xs'>
+                        ·
+                      </span>
+                      <span className='text-muted-foreground truncate text-xs'>
+                        {String(user.group)}
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Navigation links */}
-            <SheetClose asChild>
-              <Link
-                to='/profile'
-                className='text-primary/60 hover:text-primary/80 flex items-center gap-2.5 border-b p-2.5 transition-colors'
-              >
-                <User className='size-4' />
-                {t('Profile')}
+          <div className='mt-2 space-y-1'>
+            <DropdownMenuItem asChild className={menuItemClassName}>
+              <Link to='/profile'>
+                <User className='size-4.5' />
+                <span>{t('Profile')}</span>
               </Link>
-            </SheetClose>
+            </DropdownMenuItem>
 
-            <SheetClose asChild>
-              <Link
-                to='/wallet'
-                className='text-primary/60 hover:text-primary/80 flex items-center gap-2.5 border-b p-2.5 transition-colors'
-              >
-                <Wallet className='size-4' />
-                {t('Wallet')}
+            <DropdownMenuItem asChild className={menuItemClassName}>
+              <Link to='/wallet'>
+                <Wallet className='size-4.5' />
+                <span>{t('Wallet')}</span>
               </Link>
-            </SheetClose>
+            </DropdownMenuItem>
 
             {/* System Settings - only for super admin */}
             {isSuperAdmin && (
-              <SheetClose asChild>
+              <DropdownMenuItem asChild className={menuItemClassName}>
                 <Link
                   to='/system-settings/general'
                   search={{ section: 'system-info' }}
-                  className='text-primary/60 hover:text-primary/80 flex items-center gap-2.5 border-b p-2.5 transition-colors'
                 >
-                  <Settings className='size-4' />
-                  {t('System Settings')}
+                  <Settings className='size-4.5' />
+                  <span>{t('System Settings')}</span>
                 </Link>
-              </SheetClose>
+              </DropdownMenuItem>
             )}
-
-            {/* Sign out */}
-            <Button
-              variant='ghost'
-              onClick={() => {
-                setSheetOpen(false)
-                setOpen(true)
-              }}
-              className='text-destructive hover:text-destructive/80 h-auto w-full justify-start gap-2.5 p-2.5 hover:bg-transparent'
-            >
-              <LogOut className='size-4' />
-              {t('Sign out')}
-            </Button>
           </div>
-        </SheetContent>
-      </Sheet>
+
+          <DropdownMenuSeparator className='my-2' />
+
+          <DropdownMenuItem
+            variant='destructive'
+            className={menuItemClassName}
+            onClick={() => setOpen(true)}
+          >
+            <LogOut className='size-4.5' />
+            <span>{t('Sign out')}</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <SignOutDialog open={!!open} onOpenChange={setOpen} />
     </>

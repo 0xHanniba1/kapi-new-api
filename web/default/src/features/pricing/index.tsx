@@ -18,7 +18,9 @@ import { usePricingData } from './hooks/use-pricing-data'
 
 export function Pricing() {
   const { t } = useTranslation()
-  const [selectedModelName, setSelectedModelName] = useState<string | null>(null)
+  const [selectedModelName, setSelectedModelName] = useState<string | null>(
+    null
+  )
 
   const {
     models,
@@ -61,18 +63,16 @@ export function Pricing() {
     clearSearch,
   } = useFilters(models || [])
 
-  const handleModelClick = useCallback(
-    (modelName: string) => {
-      setSelectedModelName(modelName)
-    },
-    []
-  )
+  const handleModelClick = useCallback((modelName: string) => {
+    setSelectedModelName(modelName)
+  }, [])
 
   const selectedModel = useMemo(
     () =>
       selectedModelName
-        ? (models || []).find((model) => model.model_name === selectedModelName) ||
-          null
+        ? (models || []).find(
+            (model) => model.model_name === selectedModelName
+          ) || null
         : null,
     [models, selectedModelName]
   )
@@ -129,7 +129,7 @@ export function Pricing() {
   if (isLoading) {
     return (
       <PublicLayout showMainContainer={false}>
-        <div className='mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-10 xl:px-8'>
+        <div className='bg-background mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-10 xl:px-8'>
           <LoadingSkeleton viewMode={viewMode} />
         </div>
       </PublicLayout>
@@ -138,45 +138,47 @@ export function Pricing() {
 
   return (
     <PublicLayout showMainContainer={false}>
-      <div className='relative'>
-        <div
-          aria-hidden
-          className='pointer-events-none absolute inset-x-0 top-0 h-[600px] opacity-20 dark:opacity-[0.10]'
-          style={{
-            background: [
-              'radial-gradient(ellipse 60% 50% at 20% 20%, oklch(0.72 0.18 250 / 80%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 50% 40% at 80% 15%, oklch(0.65 0.15 200 / 60%) 0%, transparent 70%)',
-              'radial-gradient(ellipse 40% 35% at 50% 70%, oklch(0.70 0.12 280 / 40%) 0%, transparent 70%)',
-            ].join(', '),
-            maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
-          }}
-        />
-        <PageTransition className='relative mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-10 xl:px-8'>
-          <header className='mx-auto mb-5 max-w-3xl pt-5 text-center sm:mb-10 sm:pt-10'>
-            <p className='text-muted-foreground mb-3 text-xs font-medium tracking-widest uppercase'>
-              {t('Models Directory')}
-            </p>
-            <h1 className='text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.15] font-bold tracking-tight'>
-              {t('Model Square')}
-            </h1>
-            <p className='text-muted-foreground/80 mt-3 text-sm sm:mt-4 sm:text-base'>
-              {t('This site currently has {{count}} models enabled', {
-                count: models?.length || 0,
-              })}
-            </p>
-            <p className='text-muted-foreground/60 mx-auto mt-2 max-w-2xl text-xs leading-relaxed sm:text-sm'>
-              {t(
-                'Discover curated AI models, compare pricing and capabilities, and choose the right model for every scenario.'
-              )}
-            </p>
-            <SearchBar
-              value={searchInput}
-              onChange={setSearchInput}
-              onClear={clearSearch}
-              placeholder={t('Search model name, provider, endpoint, or tag...')}
-              className='mx-auto mt-4 max-w-2xl sm:mt-6'
-            />
+      <div className='bg-background text-foreground relative min-h-svh'>
+        <PageTransition className='relative mx-auto w-full max-w-[1800px] px-3 pt-16 pb-8 sm:px-6 sm:pt-20 sm:pb-12 xl:px-8'>
+          <header className='mx-auto mb-8 grid w-full max-w-[1680px] items-end gap-8 pt-10 sm:mb-12 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(360px,560px)]'>
+            <div className='text-center lg:text-left'>
+              <p className='text-muted-foreground/65 mb-4 font-mono text-xs font-semibold tracking-[0.24em] uppercase'>
+                · Marketplace ·
+              </p>
+              <h1 className='text-[clamp(3.75rem,8vw,5.75rem)] leading-[0.98] font-semibold tracking-normal text-balance'>
+                模型广场
+              </h1>
+              <div className='text-muted-foreground mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-medium sm:text-base lg:justify-start'>
+                <span>
+                  <span className='text-foreground font-semibold'>
+                    {models?.length || 0}
+                  </span>{' '}
+                  个模型
+                </span>
+                <span className='text-border'>·</span>
+                <span>
+                  <span className='text-foreground font-semibold'>
+                    {vendors?.length || 0}
+                    {vendors?.length ? '+' : ''}
+                  </span>{' '}
+                  供应商
+                </span>
+                <span className='text-border'>·</span>
+                <span>按 token 实时计费</span>
+              </div>
+            </div>
+
+            <div className='flex justify-center lg:justify-end lg:pb-0'>
+              <SearchBar
+                value={searchInput}
+                onChange={setSearchInput}
+                onClear={clearSearch}
+                placeholder={t(
+                  'Search model name, provider, endpoint, or tag...'
+                )}
+                className='w-full max-w-[560px]'
+              />
+            </div>
           </header>
 
           <div className='grid gap-4 xl:grid-cols-[330px_minmax(0,1fr)] 2xl:grid-cols-[330px_minmax(0,1fr)]'>

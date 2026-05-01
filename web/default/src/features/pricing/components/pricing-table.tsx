@@ -75,7 +75,7 @@ export function PricingTable(props: PricingTableProps) {
 
   return (
     <div className='space-y-4'>
-      <div className='overflow-hidden rounded-lg border'>
+      <div className='bg-card border-border overflow-hidden rounded-2xl border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -111,7 +111,7 @@ export function PricingTable(props: PricingTableProps) {
                 <TableRow
                   key={row.id}
                   onClick={() => handleRowClick(row.original)}
-                  className='hover:bg-muted/30 cursor-pointer transition-colors'
+                  className='hover:bg-muted/60 cursor-pointer transition-colors'
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

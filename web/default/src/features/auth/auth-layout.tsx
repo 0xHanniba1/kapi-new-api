@@ -10,12 +10,14 @@ type AuthLayoutProps = {
 export function AuthLayout({ children }: AuthLayoutProps) {
   const { t } = useTranslation()
   const { systemName, logo, loading } = useSystemConfig()
+  const displayName = systemName?.trim() || 'Kapi'
 
   return (
-    <div className='relative grid h-svh max-w-none'>
+    <div className='bg-background text-foreground relative min-h-svh overflow-hidden'>
+      <div className='bg-border/40 pointer-events-none absolute inset-x-0 top-0 h-px' />
       <Link
         to='/'
-        className='absolute top-4 left-4 z-10 flex items-center gap-2 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
+        className='absolute top-5 left-5 z-10 flex items-center gap-2.5 transition-opacity hover:opacity-80 sm:top-8 sm:left-8'
       >
         <div className='relative h-8 w-8'>
           {loading ? (
@@ -31,14 +33,17 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         {loading ? (
           <Skeleton className='h-6 w-24' />
         ) : (
-          <h1 className='text-xl font-medium'>{systemName}</h1>
+          <h1 className='text-lg font-semibold tracking-tight'>
+            {displayName}
+          </h1>
         )}
       </Link>
-      <div className='container flex items-center pt-16 sm:pt-0'>
-        <div className='mx-auto flex w-full flex-col justify-center space-y-2 px-4 py-8 sm:w-[480px] sm:p-8'>
+
+      <main className='relative flex min-h-svh items-center justify-center px-4 py-24 sm:px-6'>
+        <section className='border-border/50 bg-background/75 w-full max-w-[420px] rounded-2xl border p-6 shadow-[0_20px_70px_-36px_rgba(15,15,14,0.45)] backdrop-blur-2xl sm:p-8'>
           {children}
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   )
 }

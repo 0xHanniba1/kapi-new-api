@@ -1,11 +1,5 @@
 import { useCallback, useState } from 'react'
-import {
-  ArrowUpDown,
-  Check,
-  Filter,
-  Grid2X2,
-  Table2,
-} from 'lucide-react'
+import { ArrowUpDown, Check, Filter, Grid2X2, Table2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -147,7 +141,7 @@ export function PricingToolbar(props: PricingToolbarProps) {
   )
 
   return (
-    <div className='rounded-xl border p-3'>
+    <div className='bg-card border-border rounded-2xl border p-3'>
       <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
         <div className='flex items-center gap-2'>
           <Button
@@ -170,9 +164,7 @@ export function PricingToolbar(props: PricingToolbarProps) {
             <span className='text-foreground font-semibold tabular-nums'>
               {props.filteredCount.toLocaleString()}
             </span>
-            <span>
-              {props.filteredCount === 1 ? t('model') : t('models')}
-            </span>
+            <span>{props.filteredCount === 1 ? t('model') : t('models')}</span>
             {props.hasActiveFilters && props.totalCount && (
               <span className='text-muted-foreground/60 text-xs'>
                 / {props.totalCount.toLocaleString()}
